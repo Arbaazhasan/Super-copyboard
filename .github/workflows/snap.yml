@@ -1,0 +1,34 @@
+name: Build & Publish Snap
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  snapcraft:
+    name: Build Snap Package for Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Build Snap Package
+        uses: snapcore/action-build@v1
+        id: snapcraft
+
+      - name: Upload Snap Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: super-copyboard-snap
+          path: ${{ steps.snapcraft.outputs.snap }}
+
+      # Optional: Uncomment when you add SNAPCRAFT_STORE_CREDENTIALS to GitHub secrets
+      # - name: Publish to Snap Store
+      #   uses: snapcore/action-publish@v1
+      #   env:
+      #     SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+      #   with:
+      #     snap: ${{ steps.snapcraft.outputs.snap }}
+      #     release: candidate

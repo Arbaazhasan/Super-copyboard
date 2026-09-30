@@ -1,0 +1,79 @@
+name: super-copyboard
+base: core22
+version: '1.0.0'
+summary: Modern, blazing-fast clipboard history for Ubuntu GNOME (Super + V)
+description: |
+  Super-copyboard brings the seamless Windows 11 Win + V clipboard experience
+  natively to Ubuntu GNOME on Wayland and X11.
+
+  Features:
+  - Instant floating history panel summoned anywhere via Super + V
+  - Press 1–9 or Enter to paste directly into your active window
+  - Sub-millisecond SQLite FTS5 full-text search
+  - Sleek Ubuntu Yaru dark and light themes with fluid micro-animations
+  - Smart snippet recognition: Code snippets, Hex color swatches, URLs, and emails
+  - Privacy shield: ignores password managers and masks sensitive tokens
+
+grade: stable
+confinement: strict
+
+apps:
+  super-copyboard:
+    command: usr/bin/copyboard-launch.sh
+    desktop: usr/share/applications/copyboard.desktop
+    extensions: [gnome]
+    plugs:
+      - x11
+      - wayland
+      - desktop
+      - desktop-legacy
+      - unity7
+      - home
+      - system-observe
+
+parts:
+  desktop-assets:
+    plugin: dump
+    source: .
+    stage:
+      - usr/share/applications/copyboard.desktop
+      - usr/share/icons/
+      - usr/bin/copyboard-launch.sh
+      - scripts/
+    organize:
+      copyboard.desktop: usr/share/applications/copyboard.desktop
+      public/icons/icon.svg: usr/share/icons/hicolor/scalable/apps/copyboard.svg
+      scripts/copyboard-launch.sh: usr/bin/copyboard-launch.sh
+      scripts/clipboard-daemon.py: usr/bin/clipboard-daemon.py
+
+  frontend:
+    plugin: npm
+    source: .
+    npm-node-version: '20.11.0'
+    override-build: |
+      npm ci
+      npm run build
+      mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share/copyboard/dist
+      cp -r dist/* $SNAPCRAFT_PART_INSTALL/usr/share/copyboard/dist/
+
+  backend:
+    plugin: rust
+    source: src-tauri
+    build-packages:
+      - libwebkit2gtk-4.1-dev
+      - libgtk-3-dev
+      - libayatana-appindicator3-dev
+      - librsvg2-dev
+      - patchelf
+    stage-packages:
+      - libwebkit2gtk-4.1-0
+      - libgtk-3-0
+      - libayatana-appindicator3-1
+      - wl-clipboard
+      - xclip
+      - python3
+      - python3-gi
+    override-build: |
+      cargo build --release
+      mkdir -p $SNAPCRAFT_PART_INSTALL/usr/bin
+      cp target/release/copyboard $SNAPCRAFT_PART_INSTALL/usr/bin/copyboard
