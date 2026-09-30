@@ -50,6 +50,7 @@ parts:
     plugin: npm
     source: .
     npm-node-version: '20.11.0'
+    npm-include-node: true
     override-build: |
       npm ci
       npm run build
