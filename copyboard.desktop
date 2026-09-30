@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Copyboard
+Comment=Modern Clipboard History for Ubuntu GNOME (Win+V)
+Exec=copyboard %u
+Icon=copyboard
+Terminal=false
+Type=Application
+Categories=Utility;
+StartupNotify=false
+Keywords=clipboard;history;paste;copy;snippets;
+X-GNOME-Autostart-enabled=true

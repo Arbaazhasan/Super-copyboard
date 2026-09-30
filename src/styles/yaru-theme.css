@@ -1,0 +1,55 @@
+:root {
+  /* Copyboard Dark Aubergine Acrylic Palette */
+  --bg-window: #1c1420;
+  --bg-acrylic: rgba(28, 20, 32, 0.92);
+  --bg-card: rgba(36, 27, 40, 0.72);
+  --bg-card-hover: rgba(46, 35, 52, 0.88);
+  --bg-card-selected: rgba(56, 42, 64, 0.95);
+  --bg-input: rgba(22, 16, 26, 0.85);
+
+  --accent-orange: #e95420;
+  --accent-aubergine: #77216f;
+  --accent-glow: rgba(119, 33, 111, 0.35);
+
+  --text-primary: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.45);
+
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-active: rgba(255, 255, 255, 0.22);
+
+  --radius-window: 24px;
+  --radius-card: 16px;
+}
+
+/* Custom Minimal Ubuntu-style Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Glassmorphic acrylic effect matching mockup */
+.copyboard-window {
+  background: radial-gradient(
+      circle at 50% 35%,
+      rgba(119, 33, 111, 0.28) 0%,
+      rgba(27, 18, 30, 0.96) 80%
+    ),
+    #1b121e;
+  backdrop-filter: blur(32px) saturate(160%);
+  -webkit-backdrop-filter: blur(32px) saturate(160%);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0px;
+  box-shadow: none;
+}
